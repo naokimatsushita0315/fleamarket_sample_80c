@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
-  devise_for :users
-  
-  devise_scope :users do
-    get '/users', to: redirect("/users/sign_up")
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
+
+  devise_scope :user do
+    # get '/users', to: redirect("/users/sign_up")
+    get '/addresses', to: 'users/registrations#new_address'
+    post '/addresses', to: 'users/registrations#create_address'
   end
 
   root 'items#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   resources :users, only: :show
+  resources :purchases, only: :index
   
   resources :items do
     collection do
